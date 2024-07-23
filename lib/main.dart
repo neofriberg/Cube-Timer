@@ -1,17 +1,37 @@
- import 'package:app/pages/inspection.dart';
 import 'package:app/pages/score_card.dart';
+import 'package:app/redux/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
-void main() {
+void main(){
+
+  Redux.init();
   runApp(const MyApp());
- }
+}
 
- class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget{
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context){
-    return const MaterialApp(title: 'Cube App',
-    home: ScoreCard(),);
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
   }
- }
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreProvider<AppState>(
+      store: Redux.store!, 
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "cubeApp",
+        home: ScoreCard(),
+      ),
+    );
+  }
+
+}

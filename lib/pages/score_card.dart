@@ -1,3 +1,4 @@
+import 'package:app/pages/inspection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -119,7 +120,9 @@ class ScoreCard extends StatelessWidget {
             ]),
           ),
           const Center(child: Text("Average of 5 is 14")),
-          const SizedBox(width: 200, height: 100, child: Center(child: Text("Start Inspection", style: TextStyle(fontSize: 25),)),)
+          GestureDetector(onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const InspectionPage()));
+          },child: const SizedBox(width: 200, height: 100, child: Center(child: Text("Start Inspection", style: TextStyle(fontSize: 25),)),),)
         ],),
       )
     );
