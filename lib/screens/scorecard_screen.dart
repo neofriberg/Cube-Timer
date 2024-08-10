@@ -3,6 +3,7 @@ import 'package:app/redux/score_card_list/score_card_list_actions.dart';
 import 'package:app/redux/store.dart';
 import 'package:app/screens/inspection_timer_screen.dart';
 import 'package:app/utils/score_card_utils.dart';
+import 'package:app/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -50,23 +51,25 @@ class _ScorecardScreenState extends State<ScorecardScreen> {
               Text("$solveNumner", style: const TextStyle(fontSize: 30),),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black, 
-                      width: 1.5)), width: 250, height: 50,
-                      child: Center(child: Text(showTime, style: const TextStyle(fontSize: 30),)),),
+                child: GestureDetector(
+                  onTap: () {
+                    showPopUp(context, index);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black, 
+                        width: 1.5)), width: 250, height: 50,
+                        child: Center(child: Text(showTime, style: const TextStyle(fontSize: 30),)),),
+                ),
               )
             ],);
           }),),
           Padding(
             padding: const EdgeInsets.all(15),
-            child: Container(
+            child: SizedBox(
               height: 75, 
-              width: 300, 
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black)),
+              width: 300,
             child: Column(
               children: [
                 Center(

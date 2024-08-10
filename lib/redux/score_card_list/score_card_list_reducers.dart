@@ -1,6 +1,7 @@
-import 'package:app/Viewmodels/score_card_view_model.dart';
 import 'package:app/redux/score_card_list/score_card_list_actions.dart';
 import 'package:app/redux/score_card_list/score_card_list_state.dart';
+import 'package:app/redux/store.dart';
+import 'package:app/utils/time_utils.dart';
 
 ScorecardListState addTimeToScoreCardListReducer(ScorecardListState state, dynamic action){
 
@@ -26,7 +27,7 @@ ScorecardListState clearScoreCardListReducer(ScorecardListState state, dynamic a
     return state.copyWith(
       scoreCardList: [],
       statsType: state.statsType,
-      elapsedTimePerSolve: state.elapsedTimePerSolve,
+      elapsedTimePerSolve: [],
       worstPossibleAverage: state.worstPossibleAverage,
       scramble: state.scramble
     );
@@ -84,6 +85,86 @@ ScorecardListState changeScrambleReducer(ScorecardListState state, action){
       elapsedTimePerSolve: state.elapsedTimePerSolve, 
       worstPossibleAverage: state.worstPossibleAverage, 
       scramble: action.scramble);
+  }
+  return state;
+
+}
+ScorecardListState removeSolveReducer(ScorecardListState state, action){
+  if (action is RemoveSolveAction){
+    
+    Redux.store!.state.scoreCardListState.scoreCardList.removeLast();
+
+    return state.copyWith(
+      scoreCardList: state.scoreCardList,  
+      statsType: state.statsType, 
+      elapsedTimePerSolve: state.elapsedTimePerSolve, 
+      worstPossibleAverage: state.worstPossibleAverage, 
+      scramble: state.scramble);
+  }
+  return state;
+
+}
+ScorecardListState makeSolvePlusTwoReducer(ScorecardListState state, action){
+  if (action is MakeSolvePlusTwoAction){
+
+    //List<int> newList = [...Redux.store!.state.scoreCardListState.elapsedTimePerSolve];
+    //newList[action.solveIndex] += 2000;
+    String plusTwoString = "";
+    plusTwoString += "${state.scoreCardList[action.solveIndex]} + 2 = ${returnFormattedText(
+      Redux.store!.state.scoreCardListState.elapsedTimePerSolve[action.solveIndex] += 2000)}";
+    
+
+    Redux.store!.state.scoreCardListState.scoreCardList[action.solveIndex] = 
+      plusTwoString;
+
+    return state.copyWith(
+      scoreCardList: state.scoreCardList,  
+      statsType: state.statsType, 
+      elapsedTimePerSolve: state.elapsedTimePerSolve, 
+      worstPossibleAverage: state.worstPossibleAverage, 
+      scramble: state.scramble);
+  }
+  return state;
+
+}
+ScorecardListState makeSolveDNFReducer(ScorecardListState state, action){
+  if (action is MakeSolveDNFAction){
+
+    List<String> newList = [...Redux.store!.state.scoreCardListState.scoreCardList];
+    newList[action.solveIndex] = "DNF";
+
+    return state.copyWith(
+      scoreCardList: newList,  
+      statsType: state.statsType, 
+      elapsedTimePerSolve: state.elapsedTimePerSolve, 
+      worstPossibleAverage: state.worstPossibleAverage, 
+      scramble: state.scramble);
+  }
+  return state;
+
+}
+
+ScorecardListState updateElapsedTimeListReducer(ScorecardListState state, action){
+  if (action is UpdateElapsedTimeListAction){
+
+    return state.copyWith(
+      scoreCardList: state.scoreCardList,  
+      statsType: state.statsType, 
+      elapsedTimePerSolve: state.elapsedTimePerSolve, 
+      worstPossibleAverage: state.worstPossibleAverage, 
+      scramble: state.scramble);
+  }
+  return state;
+}
+
+ScorecardListState clearTimeListReducer(ScorecardListState state, action){
+  if (action is ClearTimeListAction){
+    return state.copyWith(
+      scoreCardList: state.scoreCardList, 
+      statsType: state.statsType, 
+      elapsedTimePerSolve: [], 
+      worstPossibleAverage: state.worstPossibleAverage, 
+      scramble: state.scramble);
   }
   return state;
 }

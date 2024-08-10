@@ -4,6 +4,9 @@ import 'package:app/redux/inspection/inspection_state.dart';
 import 'package:app/redux/score_card_list/score_card_list_actions.dart';
 import 'package:app/redux/score_card_list/score_card_list_reducers.dart';
 import 'package:app/redux/score_card_list/score_card_list_state.dart';
+import 'package:app/redux/time/time_actions.dart';
+import 'package:app/redux/time/time_reducers.dart';
+import 'package:app/redux/time/time_state.dart';
 import 'package:app/redux/timer/timer_actions.dart';
 import 'package:app/redux/timer/timer_reducers.dart';
 import 'package:app/redux/timer/timer_state.dart';
@@ -90,23 +93,51 @@ AppState appReducer(AppState state, dynamic action){
       changeScrambleReducer(state.scoreCardListState, action);
       return state.copyWith(scoreCardListState: nextScrambleState);
   }
+  if (action is UpdateTimeAction){
+    final nextTimeState = 
+      updateTimeReducer(state.timeState, action);
+      return state.copyWith(timeState: nextTimeState);
+  }
+  if (action is RemoveSolveAction){
+    final nextTimeRemoveState = 
+      removeSolveReducer(state.scoreCardListState, action);
+      return state.copyWith(scoreCardListState: nextTimeRemoveState);
+  }
+  if (action is MakeSolvePlusTwoAction){
+    final nextPlusTwoState = 
+      makeSolvePlusTwoReducer(state.scoreCardListState, action);
+      return state.copyWith(scoreCardListState: nextPlusTwoState);
+  }
+  if (action is MakeSolveDNFAction){
+    final nextDNFState = 
+      makeSolveDNFReducer(state.scoreCardListState, action);
+      return state.copyWith(scoreCardListState: nextDNFState);
+  }
   return state;
 }
 class AppState{
   final InspectionState inspectionState;
   final CubeTimerState cubeTimerState;
   final ScorecardListState scoreCardListState;
+  final TimeState timeState;
 
-  AppState({required this.scoreCardListState, required this.cubeTimerState, required this.inspectionState});
+  AppState({
+    required this.scoreCardListState, 
+    required this.cubeTimerState, 
+    required this.inspectionState,
+    required this.timeState
+  });
 
   AppState copyWith({
     InspectionState? inspectionState,
     CubeTimerState? cubeTimerState,
-    ScorecardListState? scoreCardListState}){
+    ScorecardListState? scoreCardListState,
+    TimeState? timeState}){
     return AppState(
       inspectionState: inspectionState ?? this.inspectionState,
       cubeTimerState: cubeTimerState ?? this.cubeTimerState,
-      scoreCardListState: scoreCardListState ?? this.scoreCardListState);
+      scoreCardListState: scoreCardListState ?? this.scoreCardListState,
+      timeState: timeState ?? this.timeState);
   }
 }
 class Redux {
@@ -123,13 +154,15 @@ class Redux {
     final inspecetionStateInitial = InspectionState.initial();
     final cubeTimerStateInitial = CubeTimerState.initial();
     final scoreCardListStateInitital = ScorecardListState.initial();
+    final timeStateInitital = TimeState.initial();
 
     _store = Store<AppState>(
       appReducer, 
       initialState: AppState(
         inspectionState: inspecetionStateInitial,
         cubeTimerState: cubeTimerStateInitial,
-        scoreCardListState: scoreCardListStateInitital));
+        scoreCardListState: scoreCardListStateInitital,
+        timeState: timeStateInitital));
   }
 
 }

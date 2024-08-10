@@ -8,6 +8,7 @@ String getAO5(List<int> timeList){
   List<int> copiedList = [...timeList];
 
   List<int> countingTimes = (copiedList..sort()).sublist(1, 4);
+  print(countingTimes);
   int average = (countingTimes.reduce((a, b) => a + b) / countingTimes.length).round();
 
   String milliSeconds = (average % 1000).toString().padLeft(3, "0").substring(0, 2);

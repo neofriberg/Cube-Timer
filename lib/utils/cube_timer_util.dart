@@ -5,6 +5,7 @@ import 'package:app/redux/score_card_list/score_card_list_actions.dart';
 import 'package:app/redux/store.dart';
 import 'package:app/redux/timer/timer_actions.dart';
 import 'package:app/utils/score_card_utils.dart';
+import 'package:app/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -53,16 +54,6 @@ class _ActiveCubeTimerState extends State<ActiveCubeTimer> {
     
   }
 
-  String returnFormattedText(int milli){
-    String milliSeconds = (milli % 1000).toString().padLeft(3, "0").substring(0, 2);
-    String seconds = ((milli ~/ 1000) % 60).toString();
-    String minutes = ((milli ~/ 1000) ~/ 60).toString();
-
-  if (minutes == "0"){
-    return "$seconds:$milliSeconds";
-  }
-    return "$minutes:$seconds:$milliSeconds";
-}
 
   @override
   void dispose(){
