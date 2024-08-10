@@ -4,6 +4,7 @@ import 'package:app/Viewmodels/cube_timer_view_model.dart';
 import 'package:app/redux/score_card_list/score_card_list_actions.dart';
 import 'package:app/redux/store.dart';
 import 'package:app/redux/timer/timer_actions.dart';
+import 'package:app/utils/score_card_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
@@ -45,16 +46,22 @@ class _ActiveCubeTimerState extends State<ActiveCubeTimer> {
     Redux.store!.dispatch(
       AddTimeToScoreCardListAction(
         time: returnFormattedText(stopwatch.elapsedMilliseconds)));
+    Redux.store!.dispatch(AddToTimeListAction(stopwatch.elapsedMilliseconds));
     Navigator.pop(context);
+    Redux.store!.dispatch(GetStatsTypeAction());
+    showScramble();
+    
   }
 
   String returnFormattedText(int milli){
-    String milliSeconds = (milli % 1000).toString().padLeft(3, "0");
-    String seconds = ((milli ~/ 1000) % 60).toString().padLeft(2, "0");
-    String minutes = ((milli ~/ 1000) ~/ 60).toString().padLeft(2, "0");
+    String milliSeconds = (milli % 1000).toString().padLeft(3, "0").substring(0, 2);
+    String seconds = ((milli ~/ 1000) % 60).toString();
+    String minutes = ((milli ~/ 1000) ~/ 60).toString();
 
-    var time = "$minutes:$seconds:$milliSeconds";
-    return time;
+  if (minutes == "0"){
+    return "$seconds:$milliSeconds";
+  }
+    return "$minutes:$seconds:$milliSeconds";
 }
 
   @override

@@ -70,6 +70,26 @@ AppState appReducer(AppState state, dynamic action){
       inspectionButtonPressedOffReducer(state.inspectionState, action);
       return state.copyWith(inspectionState: nextInspectionButtonOffState);
   }
+  if (action is ClearScoreCardListAction){
+    final nextScoreCardListClearState = 
+      clearScoreCardListReducer(state.scoreCardListState, action);
+      return state.copyWith(scoreCardListState: nextScoreCardListClearState);
+  }
+  if (action is GetStatsTypeAction){
+    final nextStatsTypeState =
+      updateStatsTypeReducer(state.scoreCardListState, action);
+      return state.copyWith(scoreCardListState: nextStatsTypeState);
+  }
+  if (action is AddToTimeListAction){
+    final nextTimeListAction =
+      addToTimeListReducer(state.scoreCardListState, action);
+      return state.copyWith(scoreCardListState: nextTimeListAction);
+  }
+  if (action is ChangeScrambleAction){
+    final nextScrambleState = 
+      changeScrambleReducer(state.scoreCardListState, action);
+      return state.copyWith(scoreCardListState: nextScrambleState);
+  }
   return state;
 }
 class AppState{
