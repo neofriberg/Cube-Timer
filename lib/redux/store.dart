@@ -1,58 +1,115 @@
-import 'package:app/redux/inspection/inpection_actions.dart';
+import 'package:app/redux/inspection/inspection_actions.dart';
 import 'package:app/redux/inspection/inspection_reducers.dart';
 import 'package:app/redux/inspection/inspection_state.dart';
-import 'package:app/redux/timelist/timelist_state.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:app/redux/score_card_list/score_card_list_actions.dart';
+import 'package:app/redux/score_card_list/score_card_list_reducers.dart';
+import 'package:app/redux/score_card_list/score_card_list_state.dart';
+import 'package:app/redux/timer/timer_actions.dart';
+import 'package:app/redux/timer/timer_reducers.dart';
+import 'package:app/redux/timer/timer_state.dart';
 import 'package:redux/redux.dart';
 
-
-AppState appReducer(AppState state, dynamic action) {
-  if (action is SetInspectionStateAction) {
-
-    final nextInspectionState = inspectionReducer(state.inspectionState, action);
-
-    return state.copyWith(inspectionState: nextInspectionState);
+AppState appReducer(AppState state, dynamic action){
+  if(action is InspectionTickAction){
+    final nextInspectionTickState = 
+      inspectionTickReducer(state.inspectionState, action);
+    return state.copyWith(inspectionState: nextInspectionTickState);
+  }
+  if(action is InspectionChangeColorAction){
+    final nextInspectionColorState = 
+      inspectionChangeColorReducer(state.inspectionState, action);
+      return state.copyWith(inspectionState: nextInspectionColorState);
+  }
+  if(action is InspectionStopAction){
+    final nextInspectionStopState = 
+      cancelInspectionReducer(state.inspectionState, action);
+      return state.copyWith(inspectionState: nextInspectionStopState);
+  }
+  if(action is StartCubeTimerAction){
+    final nextStartCubeTimerState =
+      startCubeTimerReducer(state.cubeTimerState, action);
+      return state.copyWith(cubeTimerState: nextStartCubeTimerState);
+  }
+  if (action is UpdateElapsedTimeAction){
+    final nextUpdateElapsedTimeState =
+      updateElapsedTimeReducer(state.cubeTimerState, action);
+      return state.copyWith(cubeTimerState: nextUpdateElapsedTimeState);
+  }
+  if (action is AddTimeToScoreCardListAction){
+    final nextScoreCardListState = 
+      addTimeToScoreCardListReducer(state.scoreCardListState, action);
+      return state.copyWith(scoreCardListState: nextScoreCardListState);
+  }
+  if (action is StartInspectionAction){
+    final nextStartInspectionState =
+      startInspectionReducer(state.inspectionState, action);
+      return state.copyWith(inspectionState: nextStartInspectionState);
+  }
+  if(action is StopCubeTimerAction){
+    final nextStopCubeTimerState =
+      stopCubeTimerReducer(state.cubeTimerState, action);
+      return state.copyWith(cubeTimerState: nextStopCubeTimerState);
+  }
+  if(action is InspectionButtonPressedOnAction){
+    final nextInspectionButtonPressedState =
+      inspectionButtonPressedOnReducer(state.inspectionState, action);
+      return state.copyWith(inspectionState: nextInspectionButtonPressedState);
+  }
+  if(action is InspectionButtonPressedOnShortAction){
+    final nextInspectionButtonPressedShort =
+      inspectionButtonPressedOnShortReducer(state.inspectionState, action);
+      return state.copyWith(inspectionState: nextInspectionButtonPressedShort);
+  }
+  if(action is InspectionButtonPressedOffShortAction){
+    final nextInspecetionShortOffState = 
+      inspectionButtonPressedShortOffReducer(state.inspectionState, action);
+      return state.copyWith(inspectionState: nextInspecetionShortOffState);
+  }
+  if (action is InspectionButtonPressedOffAction){
+    final nextInspectionButtonOffState = 
+      inspectionButtonPressedOffReducer(state.inspectionState, action);
+      return state.copyWith(inspectionState: nextInspectionButtonOffState);
   }
   return state;
 }
-
-
-@immutable
-class AppState {
+class AppState{
   final InspectionState inspectionState;
-  final TimeListState timelistState;
+  final CubeTimerState cubeTimerState;
+  final ScorecardListState scoreCardListState;
 
-  const AppState({
-    required this.inspectionState,
-    required this.timelistState});
+  AppState({required this.scoreCardListState, required this.cubeTimerState, required this.inspectionState});
 
-  
   AppState copyWith({
     InspectionState? inspectionState,
-    TimeListState? timelistState}){
-      return AppState(
-        inspectionState: inspectionState ?? this.inspectionState, 
-        timelistState: timelistState ?? this.timelistState);
-    }
+    CubeTimerState? cubeTimerState,
+    ScorecardListState? scoreCardListState}){
+    return AppState(
+      inspectionState: inspectionState ?? this.inspectionState,
+      cubeTimerState: cubeTimerState ?? this.cubeTimerState,
+      scoreCardListState: scoreCardListState ?? this.scoreCardListState);
+  }
 }
-
 class Redux {
   static Store<AppState>? _store;
-  static Store<AppState>? get store {
-    if (_store == null ){
+  static Store<AppState>? get store{
+    if (_store == null){
       throw Exception("store is not init");
-    } else{
+    } else {
       return _store;
     }
   }
 
-  static Future<void> init() async {
-    final inspectionStateInitial = InspectionState.initial();
-    final timeListStateInitial = TimeListState.initial();
+  static Future<void> init() async{
+    final inspecetionStateInitial = InspectionState.initial();
+    final cubeTimerStateInitial = CubeTimerState.initial();
+    final scoreCardListStateInitital = ScorecardListState.initial();
 
-    _store = Store<AppState>(appReducer, initialState: AppState(
-      inspectionState: inspectionStateInitial, 
-      timelistState: timeListStateInitial));
+    _store = Store<AppState>(
+      appReducer, 
+      initialState: AppState(
+        inspectionState: inspecetionStateInitial,
+        cubeTimerState: cubeTimerStateInitial,
+        scoreCardListState: scoreCardListStateInitital));
   }
 
 }
